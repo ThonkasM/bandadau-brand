@@ -1,0 +1,21 @@
+# CI mínimo para bandadau-brand (assets de marca: SVG, iconos de app, componente RN).
+name: ci
+on:
+  push: { branches: [main, develop] }
+  pull_request: {}
+  workflow_dispatch: {}
+concurrency: { group: "ci-${{ github.ref }}", cancel-in-progress: true }
+permissions: { contents: read }
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verificar assets de marca
+        run: |
+          test -f README.md
+          test -f react-native/BandadaLogo.tsx
+          test -d svg
+          test -d app-icons
+          ls svg app-icons >/dev/null
